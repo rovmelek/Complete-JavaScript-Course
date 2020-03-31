@@ -8,7 +8,7 @@ var questionBank = {
 
 console.log(questionBank[1]["question"]);
 
-for (i = 0; i <= questionBank[1]["option"].length(); i++)
+for (i = 0; i <= questionBank[1]["option"].length; i++)
 {
     console.log(questionBank[1]["option"][i]);
 };
