@@ -1,69 +1,107 @@
 (function (global) {
     var score = 0;
-    var questionBank =
+
+    class questionObj
     {
-        1: {
-            question: "Who is the teacher of this course?",
-            option: ["Jonas", "Mike", "Kevin"],
-            answer: "Jonas"
-        },
-        2: {
-            question: "What year is this year?",
-            option: [2019, 2020, 2021, 2022],
-            answer: 2020
-        },
-        3: {
-            question: "What language is being taught in this course?",
-            option: ["Java", "JavaScript", "Python", "Perl", "PHP"],
-            answer: "JavaScript"
+        constructor(question, option, answer)
+        {
+            this.question = question;
+            this.option = option;
+            this.answer = answer;
         }
-    };
+    }
+
+    class questionBankObj
+    {
+        constructor()
+        {
+            this.questions = [];
+        }
+
+        addQuestion(question, option, answer)
+        {
+            this.questions.push(new questionObj(question, option, answer));
+        }
+
+        getQuestion(questionNumber)
+        {
+            return this.questions[questionNumber].question;
+        }
+
+        getOption(questionNumber)
+        {
+            return this.questions[questionNumber].option;
+        }
+
+        isString(input)
+        {
+            return (typeof input) === "string";
+        }
+
+        getAnswer(questionNumber)
+        {
+            var answer = this.questions[questionNumber].answer;
+
+            return this.isString(answer) ? answer.toUpperCase() : answer.toString().toUpperCase();
+        }
+
+        checkAnswer(questionNumber, userInput)
+        {
+            return userInput.toUpperCase() === this.getAnswer(questionNumber);
+        }
+
+        displayQuestionAndOption(questionNumber)
+        {
+            console.log("Q: " + this.getQuestion(questionNumber));
+    
+            for (var i = 0; i < this.getOption(questionNumber).length; i++)
+            {
+                console.log(this.getOption(questionNumber)[i]);
+            };
+        };
+    }
 
     function genRndInteger(min, max)
     {
         return Math.floor(Math.random() * (max - min)) + min;
     };
 
-    function displayQuestionOption(questionNumber)
-    {
-        console.log("Q: " + questionBank[questionNumber]["question"]);
+    // main()
 
-        for (i = 0; i < questionBank[questionNumber]["option"].length; i++)
-        {
-            console.log(questionBank[questionNumber]["option"][i]);
-        };
-    };
+    // initiate the environment
+    var questionNumber = 0;
+    var questionBank = new questionBankObj();
 
-    function checkInput(userInput)
-    {
-        var answer = questionBank[questionNumber]["answer"];
+    // add questions to the question bank
+    questionBank.addQuestion(
+        "Who is the teacher of this course?",
+        ["Jonas", "Mike", "Kevin"],
+        "Jonas"
+    )
 
-        function isString(input)
-        {
-            return (typeof input) === "string";
-        }
+    questionBank.addQuestion(
+        "What year is this year?",
+        [2019, 2020, 2021, 2022],
+        2020
+    )
 
-        function getAnswer()
-        {
-            return isString(answer) ? answer.toUpperCase() : answer.toString().toUpperCase();
-        }
-    
-        // console.log("The type of user input " + userInput + " is " + (typeof userInput));
-        // console.log("Correct answer is " + getAnswer());
-        return userInput.toUpperCase() === getAnswer();
-    };
+    questionBank.addQuestion(
+        "What language is being taught in this course?",
+        ["Java", "JavaScript", "Python", "Perl", "PHP"],
+        "JavaScript"
+    )
 
+    // start the main loop
     do
     {
-        var questionNumber = genRndInteger(1, 4);
+        questionNumber = genRndInteger(0, 3);
 
-        // console.log("Asking question number " + questionNumber)
+        console.log("Asking question number " + (questionNumber + 1 ))
 
-        displayQuestionOption(questionNumber)
-
+        questionBank.displayQuestionAndOption(questionNumber)
+        
         var userInput = prompt("Please input your answer (type \"exit\" to leave): ");
 
-        // console.log('User input: ' + userInput);
         if (userInput.toUpperCase() === "EXIT")
         {
             console.log("==========")
@@ -72,7 +110,7 @@
         }
         else
         {
-            if (checkInput(userInput))
+            if (questionBank.checkAnswer(questionNumber, userInput))
             {
                 console.log("==> " + userInput + " is the correct answer.")
                 score += 1;
