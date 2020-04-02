@@ -1,6 +1,4 @@
 (function (global) {
-    var score = 0;
-
     class questionObj
     {
         constructor(question, option, answer)
@@ -69,6 +67,7 @@
     // main()
 
     // initiate the environment
+    var score = 0;
     var questionNumber = 0;
     var questionBank = new questionBankObj();
 
