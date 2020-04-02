@@ -57,14 +57,14 @@
             for (var i = 0; i < this.getOption(questionNumber).length; i++)
             {
                 console.log(this.getOption(questionNumber)[i]);
-            };
-        };
-    }
+            }
+        }
 
-    function genRndInteger(min, max)
-    {
-        return Math.floor(Math.random() * (max - min)) + min;
-    };
+        getQuestionNumber(min, max)
+        {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+    }
 
     // main()
 
@@ -72,7 +72,7 @@
     var questionNumber = 0;
     var questionBank = new questionBankObj();
 
-    // add questions to the question bank
+    // add question, options and answer to the question bank
     questionBank.addQuestion(
         "Who is the teacher of this course?",
         ["Jonas", "Mike", "Kevin"],
@@ -94,7 +94,7 @@
     // start the main loop
     do
     {
-        questionNumber = genRndInteger(0, 3);
+        questionNumber = questionBank.getQuestionNumber(0, 3);
 
         console.log("Asking question number " + (questionNumber + 1 ))
 
