@@ -21,25 +21,21 @@ class budgetControllerObj
         this.items.push(new budgetObj(type, description, amount));
     }
 
+    deleteItem()
+    {
+        // do something
+    }
+
     getItemByType(type)
     {
-        // let incomeList = [for (income of this.items) if (income.type ==='inc') income];
         return this.items.filter(item => item.type === type);
     }
 
-    calculateTotalIncome()
+    calculateTotal(type)
     {
-        let incomeList = this.getItemByType('inc');
-        let totalIncome = incomeList.reduce((a, item) => a + item.amount, 0);
-        // console.log(typeof totalIncome);
-        return Math.round((totalIncome + Number.EPSILON) * 100) / 100;
-    }
-
-    calculateTotalExpense()
-    {
-        let expenseList = this.getItemByType('exp');
-        let totalExpense = expenseList.reduce((a, item) => a + item.amount, 0);
-        return Math.round((totalExpense + Number.EPSILON) * 100) / 100;
+        let itemList = this.getItemByType(type);
+        let totalNumber = itemList.reduce((a, item) => a + item.amount, 0);
+        return Math.round((totalNumber + Number.EPSILON) * 100) / 100;
     }
 }
 
@@ -47,7 +43,7 @@ class uiControllerObj
 {
     constructor()
     {
-        // some code here
+
     }
 
     thousands_separators(num)
@@ -81,29 +77,54 @@ class uiControllerObj
         this.setFocus('.add__description');
     }
 
-    updateTotalIncome()
+    updateItemList(type)
     {
-        let totalIncome = budgetController.calculateTotalIncome().toFixed(2);
-        // console.log(totalIncome)
-        // console.log('Current total income: ' + this.thousands_separators(totalIncome));
-        $('.budget__income--value').text('+ ' + this.thousands_separators(totalIncome));
-
+        let itemList = budgetController.getItemByType(type);
+        console.log('Update income list');
+        console.log(itemList);
+        if (itemList.length > 0)
+        {
+            (type === 'inc') ? $('.income__list').text('') : $('.expenses__list').text('');
+            for (let idx = 0; idx < itemList.length; idx++)
+            {
+                console.log('Processing item number: ' + idx)
+                let typeString = (type === 'inc') ? 'income' : 'expense';
+                let desc = itemList[idx].description;
+                let amount = this.thousands_separators(itemList[idx].amount.toFixed(2));
+                let sign = (type === 'inc') ? '+' : '-';
+                let itemDivBlock =  `
+                    <div class="item clearfix" id="${typeString}-${idx}">
+                        <div class="item__description">${desc}</div>
+                        <div class="right clearfix">
+                            <div class="item__value">${sign} ${amount}</div>
+                            <div class="item__delete">
+                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                (type === 'inc') ? $('.income__list').append(itemDivBlock) : $('.expenses__list').append(itemDivBlock);
+            }
+        }
     }
 
-    updateTotalExpense()
+    updateTotal(type)
     {
-        let totalExpense = budgetController.calculateTotalExpense().toFixed(2);
-        // console.log('Current total expense: ' + totalExpense);
-        $('.budget__expenses--value').text('- ' + this.thousands_separators(totalExpense));
+        let total = budgetController.calculateTotal(type).toFixed(2);
+        let target = (type === 'inc') ? '.budget__income--value' : '.budget__expenses--value';
+        let sign = (type === 'inc') ? '+' : '-';
+        $(target).text(sign + ' ' + this.thousands_separators(total));
     }
 
     updateAvailableBudget()
     {
-        let totalIncome = budgetController.calculateTotalIncome().toFixed(2);
-        let totalExpense = budgetController.calculateTotalExpense().toFixed(2);
+        let totalIncome = budgetController.calculateTotal('inc').toFixed(2);
+        let totalExpense = budgetController.calculateTotal('exp').toFixed(2);
         let availableBudget = (totalIncome - totalExpense).toFixed(2);
+        let expensePercentage = Math.round(totalExpense * 100 / totalIncome);
         let flag = (availableBudget >= 0) ? "+" : "-"
         $('.budget__value').text(flag + ' ' + this.thousands_separators(availableBudget));
+        $('.budget__expenses--percentage').text(expensePercentage + '%');
     }
 
     resetNumber()
@@ -111,6 +132,7 @@ class uiControllerObj
         $('.budget__value').text('+ 0.00')
         $('.budget__income--value').text('+ 0.00');
         $('.budget__expenses--value').text('- 0.00');
+        $('.budget__expenses--percentage').text('0%');
     }
 
     displayItem()
@@ -120,8 +142,6 @@ class uiControllerObj
         {
             console.log(budgetController.items[i]);
         }
-        // console.log(budgetController.calculateTotalIncome());
-        // console.log(budgetController.calculateTotalExpense());
     }
 }
 
@@ -140,7 +160,9 @@ function appController()
         budgetController.addItem(type, description, parseFloat(amount));
 
         // call uiController() to update the total income or expense
-        (type === 'inc') ? uiController.updateTotalIncome() : uiController.updateTotalExpense();
+        uiController.updateTotal(type);
+
+        uiController.updateItemList(type);
 
         // clear the user inputs after updating the budgets
         uiController.clearUserInput();
