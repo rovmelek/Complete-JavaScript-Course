@@ -121,7 +121,7 @@ class uiControllerObj
         let totalExpense = budgetController.calculateTotal('exp').toFixed(2);
         let availableBudget = (totalIncome - totalExpense).toFixed(2);
         let expensePercentage = Math.round(totalExpense * 100 / totalIncome);
-        let flag = (availableBudget >= 0) ? "+" : "-"
+        let flag = (availableBudget >= 0) ? "+" : ""
         $('.budget__value').text(flag + ' ' + this.thousands_separators(availableBudget));
         $('.budget__expenses--percentage').text(expensePercentage + '%');
     }
