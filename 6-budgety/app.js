@@ -11,30 +11,23 @@ function appController()
         // update the budgets
         budgetController.addItem(type, description, parseFloat(amount));
 
-        // call uiController() to update the total income or expense
-        uiController.updateTotal(budgetController, type);
-        uiController.updateItemList(budgetController, type);
-
         // clear the user inputs after updating the budgets
         uiController.clearUserInput();
 
-        // update the available budget
-        uiController.updateAvailableBudget(budgetController);
-        // uiController.displayItem(budgetController);
+        // refresh the numbers after changes
+        uiController.refreshNumber(budgetController, type);
     }
     else if (event.type === 'click' && event.composedPath()[4].className === 'item clearfix')
     {
         let parts = event.composedPath()[4].id.split('-');
         let type = (parts[0] === 'income') ? 'inc' : 'exp';
         let timestamp = parts[1];
+
+        // delete the item with the specific timestamp
         budgetController.deleteItem(timestamp);
 
-        // call uiController() to update the total income or expense
-        uiController.updateTotal(budgetController, type);
-        uiController.updateItemList(budgetController, type);
-        
-        // update the available budget
-        uiController.updateAvailableBudget(budgetController);
+        // refresh the numbers after changes
+        uiController.refreshNumber(budgetController, type);
     }
     else 
     {
@@ -45,8 +38,22 @@ function appController()
 
 // main()
 // initiate the environment
+let DOMString = {
+    addType: '.add__type',
+    addDesc: '.add__description',
+    addValue: '.add__value',
+    addBtn: '.add__btn',
+    incList: '.income__list',
+    expList: '.expenses__list',
+    budgetIncValue: '.budget__income--value',
+    budgetExpValue: '.budget__expenses--value',
+    budgetValue: '.budget__value',
+    budgetExpPct: '.budget__expenses--percentage',
+    budgetTitleMonth: '.budget__title--month'
+}
+
 let budgetController = new budgetControllerObj();
-let uiController = new uiControllerObj();
+let uiController = new uiControllerObj(DOMString);
 
 $(document).ready(function()
 {
@@ -54,8 +61,8 @@ $(document).ready(function()
     uiController.resetNumber();
 
     // listen to events and call the main controller function "appController()" to update number and UI
-    $('.add__btn').on('click', appController);
-    $('.add__value').on('keypress', appController);
+    $(DOMString.addBtn).on('click', appController);
+    $(DOMString.addValue).on('keypress', appController);
     $('div.container.clearfix').on('click', '[id^=income]', appController);
     $('div.container.clearfix').on('click', '[id^=expense]', appController);
 });

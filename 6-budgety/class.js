@@ -41,9 +41,9 @@ class budgetControllerObj
 
 class uiControllerObj
 {
-    constructor()
+    constructor(DOMString)
     {
-
+        this.DOMString = DOMString;
     }
 
     thousands_separators(num)
@@ -55,9 +55,9 @@ class uiControllerObj
 
     getUserInput()
     {
-        let type = $('.add__type').val();
-        let description = $('.add__description').val();
-        let amount = $('.add__value').val();
+        let type = $(this.DOMString.addType).val();
+        let description = $(this.DOMString.addDesc).val();
+        let amount = $(this.DOMString.addValue).val();
         return {type, description, amount};
     }
 
@@ -68,10 +68,10 @@ class uiControllerObj
 
     clearUserInput()
     {
-        $('.add__type').prop('selectedIndex', 0);
-        $('.add__description').val('');
-        $('.add__value').val('');
-        this.setFocus('.add__description');
+        $(this.DOMString.addType).prop('selectedIndex', 0);
+        $(this.DOMString.addDesc).val('');
+        $(this.DOMString.addValue).val('');
+        this.setFocus(this.DOMString.addDesc);
     }
 
     updateItemList(budgetController, type)
@@ -81,7 +81,7 @@ class uiControllerObj
         if (itemList.length > 0)
         {
             // clear the income/expense item list first
-            (type === 'inc') ? $('.income__list').text('') : $('.expenses__list').text('');
+            (type === 'inc') ? $(this.DOMString.incList).text('') : $(this.DOMString.expList).text('');
 
             // rebuild the income/expense item list
             for (let idx = 0; idx < itemList.length; idx++)
@@ -102,7 +102,7 @@ class uiControllerObj
                         </div>
                     </div>
                 `;
-                (type === 'inc') ? $('.income__list').append(itemDivBlock) : $('.expenses__list').append(itemDivBlock);
+                (type === 'inc') ? $(this.DOMString.incList).append(itemDivBlock) : $(this.DOMString.expList).append(itemDivBlock);
             }
         }
     }
@@ -110,7 +110,7 @@ class uiControllerObj
     updateTotal(budgetController, type)
     {
         let total = budgetController.calculateTotal(type).toFixed(2);
-        let target = (type === 'inc') ? '.budget__income--value' : '.budget__expenses--value';
+        let target = (type === 'inc') ? this.DOMString.budgetIncValue : this.DOMString.budgetExpValue;
         let sign = (type === 'inc') ? '+' : '-';
         $(target).text(sign + ' ' + this.thousands_separators(total));
     }
@@ -121,22 +121,34 @@ class uiControllerObj
         let totalExpense = budgetController.calculateTotal('exp').toFixed(2);
         let availableBudget = (totalIncome - totalExpense).toFixed(2);
         let expensePercentage = Math.round(totalExpense * 100 / totalIncome);
+        expensePercentage = (isNaN(expensePercentage) || !isFinite(expensePercentage)) ? 0 : expensePercentage;
         let flag = (availableBudget >= 0) ? "+" : "-"
-        $('.budget__value').text(flag + ' ' + this.thousands_separators(Math.abs(availableBudget)));
-        $('.budget__expenses--percentage').text(expensePercentage + '%');
+        $(this.DOMString.budgetValue).text(flag + ' ' + this.thousands_separators(Math.abs(availableBudget)));
+        $(this.DOMString.budgetExpPct).text(expensePercentage + '%');
     }
 
     resetNumber()
     {
-        $('.budget__value').text('+ 0.00')
-        $('.budget__income--value').text('+ 0.00');
-        $('.budget__expenses--value').text('- 0.00');
-        $('.budget__expenses--percentage').text('0%');
+        $(this.DOMString.budgetValue).text('+ 0.00')
+        $(this.DOMString.budgetIncValue).text('+ 0.00');
+        $(this.DOMString.budgetExpValue).text('- 0.00');
+        $(this.DOMString.budgetExpPct).text('0%');
+    }
+
+    refreshNumber(budgetController, type)
+    {
+        // call uiController() to update the total income or expense
+        this.updateTotal(budgetController, type);
+        this.updateItemList(budgetController, type);
+
+        // update the available budget
+        this.updateAvailableBudget(budgetController);
+        // this.displayItem(budgetController);
     }
 
     updateMonth()
     {
         let month = Intl.DateTimeFormat('en-us', { month: 'long' }).format(new Date(Date.now()));
-        $('.budget__title--month').text(month);
+        $(this.DOMString.budgetTitleMonth).text(month);
     }
 }
