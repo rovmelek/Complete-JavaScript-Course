@@ -23,7 +23,10 @@ class budgetControllerObj
 
     deleteItem(timestamp)
     {
+        console.log(this.items);
+        console.log(timestamp);
         this.items = this.items.filter(item => item.timestamp !== parseInt(timestamp));
+        console.log(this.items);
     }
 
     getItemByType(type)
@@ -79,32 +82,28 @@ class uiControllerObj
     {
         let itemList = budgetController.getItemByType(type);
 
-        if (itemList.length > 0)
-        {
-            // clear the income/expense item list first
-            (type === 'inc') ? $(this.DOMString.incList).text('') : $(this.DOMString.expList).text('');
+        // clear the income/expense item list first
+        (type === 'inc') ? $(this.DOMString.incList).text('') : $(this.DOMString.expList).text('');
 
-            // rebuild the income/expense item list
-            for (let idx = 0; idx < itemList.length; idx++)
-            {
-                let typeString = (type === 'inc') ? 'income' : 'expense';
-                let id = itemList[idx].timestamp;
-                let desc = itemList[idx].description;
-                let amount = this.thousands_separators(itemList[idx].amount.toFixed(2));
-                let sign = (type === 'inc') ? '+' : '-';
-                let itemDivBlock =  `
-                    <div class="item clearfix" id="${typeString}-${id}">
-                        <div class="item__description">${desc}</div>
-                        <div class="right clearfix">
-                            <div class="item__value">${sign} ${amount}</div>
-                            <div class="item__delete">
-                                <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                            </div>
+        // rebuild the income/expense item list
+        for (let idx = 0; idx < itemList.length; idx++)
+        {
+            let typeString = (type === 'inc') ? 'income' : 'expense';
+            let id = itemList[idx].timestamp;
+            let desc = itemList[idx].description;
+            let amount = this.thousands_separators(itemList[idx].amount.toFixed(2));
+            let sign = (type === 'inc') ? '+' : '-';
+            let itemDivBlock =  `
+                <div class="item clearfix" id="${typeString}-${id}">
+                    <div class="item__description">${desc}</div>
+                    <div class="right clearfix">
+                        <div class="item__value">${sign} ${amount}</div>
+                        <div class="item__delete">
+                            <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                         </div>
                     </div>
-                `;
-                (type === 'inc') ? $(this.DOMString.incList).append(itemDivBlock) : $(this.DOMString.expList).append(itemDivBlock);
-            }
+                </div>`;
+            (type === 'inc') ? $(this.DOMString.incList).append(itemDivBlock) : $(this.DOMString.expList).append(itemDivBlock);
         }
     }
 

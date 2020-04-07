@@ -20,11 +20,18 @@ function appController()
             uiController.refreshNumber(budgetController, type);
         }
     }
-    else if (event.type === 'click' && event.composedPath()[4].className === 'item clearfix')
+    // not sure if parentsUntil is better or the composedPath. keep both for furture reference
+    // else if (event.type === 'click' && event.composedPath()[4].className === 'item clearfix')
+    else if (event.type === 'click' && event.target.className === 'ion-ios-close-outline')
     {
-        let parts = event.composedPath()[4].id.split('-');
+        // let parts = event.composedPath()[4].id.split('-');
+        let parts = $(event.target).parentsUntil(
+            `div:contains(\\"${DOMString.incList}\\"), div:contains(\\"${DOMString.expList}\\")`
+        )[3].id.split('-');
         let type = (parts[0] === 'income') ? 'inc' : 'exp';
         let timestamp = parts[1];
+        console.log(type);
+        console.log(timestamp);
 
         // delete the item with the specific timestamp
         budgetController.deleteItem(timestamp);
