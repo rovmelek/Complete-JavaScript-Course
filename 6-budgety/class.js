@@ -71,6 +71,7 @@ class uiControllerObj
         $(this.DOMString.addType).prop('selectedIndex', 0);
         $(this.DOMString.addDesc).val('');
         $(this.DOMString.addValue).val('');
+        // $(this.DOMString.addDesc + ', ' + this.DOMString.addValue).val('');
         this.setFocus(this.DOMString.addDesc);
     }
 

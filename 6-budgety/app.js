@@ -8,14 +8,17 @@ function appController()
         // get user input
         let {type, description, amount} = uiController.getUserInput();
         
-        // update the budgets
-        budgetController.addItem(type, description, parseFloat(amount));
+        if (!isNaN(amount) && amount > 0 && description !== "" && description.trim().length > 0)
+        {
+            // update the budgets
+            budgetController.addItem(type, description, parseFloat(amount));
 
-        // clear the user inputs after updating the budgets
-        uiController.clearUserInput();
+            // clear the user inputs after updating the budgets
+            uiController.clearUserInput();
 
-        // refresh the numbers after changes
-        uiController.refreshNumber(budgetController, type);
+            // refresh the numbers after changes
+            uiController.refreshNumber(budgetController, type);
+        }
     }
     else if (event.type === 'click' && event.composedPath()[4].className === 'item clearfix')
     {
