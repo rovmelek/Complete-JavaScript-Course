@@ -1,7 +1,7 @@
 // main controller function to update number and UI
 function appController()
 {
-    console.log(event);
+    // console.log(event);
     // only "mouse click" and "enter" will trigger number and UI update
     if ((event.type === 'click'  && event.composedPath()[1].className === 'add__btn') || (event.type === 'keypress' && event.keyCode === 13))
     {
