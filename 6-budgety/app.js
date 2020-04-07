@@ -8,7 +8,7 @@ function appController()
         // get user input
         let {type, description, amount} = uiController.getUserInput();
         
-        if (!isNaN(amount) && amount > 0 && description !== "" && description.trim().length > 0)
+        if (uiController.validateInput(description, amount))
         {
             // update the budgets
             budgetController.addItem(type, description, parseFloat(amount));
@@ -65,7 +65,7 @@ $(document).ready(function()
 
     // listen to events and call the main controller function "appController()" to update number and UI
     $(DOMString.addBtn).on('click', appController);
-    $(DOMString.addValue).on('keypress', appController);
+    $(DOMString.addDesc + ', ' + DOMString.addValue).on('keypress', appController);
     $('div.container.clearfix').on('click', '[id^=income]', appController);
     $('div.container.clearfix').on('click', '[id^=expense]', appController);
 });

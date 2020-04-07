@@ -152,4 +152,9 @@ class uiControllerObj
         let month = Intl.DateTimeFormat('en-us', { month: 'long' }).format(new Date(Date.now()));
         $(this.DOMString.budgetTitleMonth).text(month);
     }
+
+    validateInput(description, amount)
+    {
+        return (!isNaN(amount) && amount > 0 && description !== "" && description.trim().length > 0)
+    }
 }
