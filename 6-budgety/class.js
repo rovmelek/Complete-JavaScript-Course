@@ -136,7 +136,6 @@ class uiControllerObj
 
                 if (typeof $(targetPct).html() !== 'undefined')
                 {
-                    console.log('Replace PCT');
                     $(targetPct).html(`${expPct}%`);
                 }
                 else
