@@ -3,7 +3,9 @@ function appController()
 {
     // console.log(event);
     // only "mouse click" and "enter" will trigger number and UI update
-    if ((event.type === 'click'  && event.composedPath()[1].className === 'add__btn') || (event.type === 'keypress' && event.keyCode === 13))
+    if (
+        (event.type === 'click' && event.composedPath()[1].className === 'add__btn') 
+        || (event.type === 'keypress' && event.keyCode === 13))
     {
         // get user input
         let {type, description, amount} = uiController.getUserInput();
@@ -59,7 +61,9 @@ let DOMString = {
     budgetExpValue: '.budget__expenses--value',
     budgetValue: '.budget__value',
     budgetExpPct: '.budget__expenses--percentage',
-    budgetTitleMonth: '.budget__title--month'
+    budgetTitleMonth: '.budget__title--month',
+    itemValue: '.item__value',
+    itemPct: '.item__percentage'
 }
 
 let budgetController = new budgetControllerObj();

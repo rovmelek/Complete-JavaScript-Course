@@ -23,10 +23,10 @@ class budgetControllerObj
 
     deleteItem(timestamp)
     {
-        console.log(this.items);
-        console.log(timestamp);
+        // console.log(this.items);
+        // console.log(timestamp);
         this.items = this.items.filter(item => item.timestamp !== parseInt(timestamp));
-        console.log(this.items);
+        // console.log(this.items);
     }
 
     getItemByType(type)
@@ -110,6 +110,49 @@ class uiControllerObj
         }
     }
 
+    updateExpPctPerItem(budgetController)
+    {
+        // initiate local variable
+        let totalIncome = budgetController.calculateTotal('inc');
+        let itemList = budgetController.getItemByType('exp');
+        let expPctString;
+
+        // only update the expense percentage when there is any
+        if (itemList.length > 0)
+        {
+            for (let idx = 0; idx < itemList.length; idx++)
+            {
+                // calculate the expense item percentage
+                let expPct = Math.round(itemList[idx].amount.toFixed(2) * 100 / totalIncome);
+                expPct = (!isNaN(expPct) && isFinite(expPct)) ? expPct : '--';
+
+                // get the expense ID
+                let timestamp = itemList[idx].timestamp;
+                // generate the CSS ID
+                let targetID = ['#expense', timestamp].join('-');
+
+                // generate the target of CSS item__percentage under the target ID
+                let targetPct =  `${targetID} ${this.DOMString.itemPct}`;
+
+                if (typeof $(targetPct).html() !== 'undefined')
+                {
+                    console.log('Replace PCT');
+                    $(targetPct).html(`${expPct}%`);
+                }
+                else
+                {
+                    // generate the target of CSS item__value under the target ID
+                    let targetValue = `${targetID} ${this.DOMString.itemValue}`;
+                    // generate the expense percentage HTML for insert
+                    expPctString =  `<div class="item__percentage">${expPct}%</div>`;
+
+                    console.log('Add PCT');
+                    $(targetValue).after(expPctString);
+                }
+            }
+        }
+    }
+
     updateTotal(budgetController, type)
     {
         let total = budgetController.calculateTotal(type).toFixed(2);
@@ -143,6 +186,7 @@ class uiControllerObj
         // call uiController() to update the total income or expense
         this.updateTotal(budgetController, type);
         this.updateItemList(budgetController, type);
+        this.updateExpPctPerItem(budgetController);
 
         // update the available budget
         this.updateAvailableBudget(budgetController);
