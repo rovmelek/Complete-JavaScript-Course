@@ -23,10 +23,7 @@ class budgetControllerObj
 
     deleteItem(timestamp)
     {
-        // console.log(this.items);
-        // console.log(timestamp);
         this.items = this.items.filter(item => item.timestamp !== parseInt(timestamp));
-        // console.log(this.items);
     }
 
     getItemByType(type)
