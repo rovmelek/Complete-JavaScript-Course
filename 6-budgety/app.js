@@ -55,7 +55,7 @@ function appController()
 
 // main()
 // initiate the environment
-let DOMString = {
+const DOMString = {
     addType: '.add__type',
     addDesc: '.add__description',
     addValue: '.add__value',
