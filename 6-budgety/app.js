@@ -41,23 +41,10 @@ function appController()
         // refresh the numbers after changes
         uiController.refreshNumber(budgetController, type);
     }
-    else if (event.type === 'change' && event.target.className.includes('add__type'))
+    else if (event.type === 'change' && event.target.className.includes(`${DOMString.addType.substr(1)}`))
     {
         let type = event.target.value;
-        if (type === 'exp')
-        {
-            $(`${DOMString.addType}, ${DOMString.addDesc}, ${DOMString.addValue}`).addClass("red-focus");
-            $(`${DOMString.addBtn}`).addClass("red");
-        }
-        else if (type === 'inc')
-        {
-            $(`${DOMString.addType}, ${DOMString.addDesc}, ${DOMString.addValue}`).removeClass("red-focus");
-            $(`${DOMString.addBtn}`).removeClass("red");
-        }
-        else
-        {
-            console.log(`Unknow type detected: ${type}`)
-        }
+        uiController.changeInputStyle(type);
     }
     else 
     {
@@ -91,6 +78,7 @@ $(document).ready(function()
 {
     uiController.updateMonth();
     uiController.resetNumber();
+    uiController.changeInputStyle($(`${DOMString.addType}`).val());
 
     // listen to events and call the main controller function "appController()" to update number and UI
     $(DOMString.addBtn).on('click', appController);

@@ -66,6 +66,24 @@ class uiControllerObj
         $(className).focus();
     }
 
+    changeInputStyle (type)
+    {
+        if (type === 'exp')
+        {
+            $(`${this.DOMString.addType}, ${this.DOMString.addDesc}, ${this.DOMString.addValue}`).addClass("red-focus");
+            $(`${this.DOMString.addBtn}`).addClass("red");
+        }
+        else if (type === 'inc')
+        {
+            $(`${this.DOMString.addType}, ${this.DOMString.addDesc}, ${this.DOMString.addValue}`).removeClass("red-focus");
+            $(`${this.DOMString.addBtn}`).removeClass("red");
+        }
+        else
+        {
+            console.log(`Unknow type detected: ${type}`)
+        }
+    }
+
     clearUserInput()
     {
         $(this.DOMString.addType).prop('selectedIndex', 0);
