@@ -191,7 +191,7 @@ class uiControllerObj
 
     updateMonth()
     {
-        let month = Intl.DateTimeFormat('en-us', { month: 'long' }).format(new Date(Date.now()));
+        let month = Intl.DateTimeFormat('en-us', { month: 'long', year: 'numeric' }).format(new Date(Date.now()));
         $(this.DOMString.budgetTitleMonth).text(month);
     }
 
