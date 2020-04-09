@@ -41,6 +41,24 @@ function appController()
         // refresh the numbers after changes
         uiController.refreshNumber(budgetController, type);
     }
+    else if (event.type === 'change' && event.target.className.includes('add__type'))
+    {
+        let type = event.target.value;
+        if (type === 'exp')
+        {
+            $(`${DOMString.addType}, ${DOMString.addDesc}, ${DOMString.addValue}`).addClass("red-focus");
+            $(`${DOMString.addBtn}`).addClass("red");
+        }
+        else if (type === 'inc')
+        {
+            $(`${DOMString.addType}, ${DOMString.addDesc}, ${DOMString.addValue}`).removeClass("red-focus");
+            $(`${DOMString.addBtn}`).removeClass("red");
+        }
+        else
+        {
+            console.log(`Unknow type detected: ${type}`)
+        }
+    }
     else 
     {
         console.log('Unknow event detected!');
@@ -79,4 +97,5 @@ $(document).ready(function()
     $(DOMString.addDesc + ', ' + DOMString.addValue).on('keypress', appController);
     $('div.container.clearfix').on('click', '[id^=income]', appController);
     $('div.container.clearfix').on('click', '[id^=expense]', appController);
+    $('.add__type').change(appController);
 });
