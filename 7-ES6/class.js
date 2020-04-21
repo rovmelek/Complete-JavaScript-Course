@@ -65,6 +65,32 @@ class facilityContainer
         }
     }
 
+    getParkTotalAge()
+    {
+        return this.parkList.reduce((sum, park) => sum + (new Date().getFullYear() - park.buildYear), 0);
+    }
+
+    getParkAvgAge()
+    {
+        return this.getParkTotalAge() / this.parkList.length;
+    }
+
+    getParkTreeDensity()
+    {
+        this.parkList.forEach(
+            park => console.log(`${park.name} has a tree density of ${park.numberOfTree / park.size} trees per square km`)
+        );
+    }
+
+    getParkTreeGreaterThan(number)
+    {   
+        this.parkList.filter(
+            park => park.numberOfTree > parseInt(number)
+        ).forEach(
+            park => console.log(`${park.name} has more than ${number} trees.`)
+        );   
+    }
+
     viewList()
     {
         console.log(this.parkList);

@@ -6,9 +6,9 @@ facilities.addFacility(
     'park',
     {
         name: 'Green Park',
-        buildYear: 1868,
-        numberOfTree: 54321,
-        size: 20
+        buildYear: 1898,
+        numberOfTree: 430,
+        size: 0.4
     }
 );
 
@@ -16,9 +16,9 @@ facilities.addFacility(
     'park',
     {
         name: 'National Park',
-        buildYear: 1921,
-        numberOfTree: 12345,
-        size: 10
+        buildYear: 1971,
+        numberOfTree: 13432,
+        size: 11
     }
 );
 
@@ -26,9 +26,9 @@ facilities.addFacility(
     'park',
     {
         name: 'Oak Park',
-        buildYear: 1952,
-        numberOfTree: 4567,
-        size: 20
+        buildYear: 1962,
+        numberOfTree: 949,
+        size: 0.4
     }
 );
 
@@ -78,3 +78,8 @@ facilities.addFacility(
 
 // debug
 facilities.viewList();
+console.log('----PARKS REPORT----');
+console.log(`Our ${facilities.parkList.length} parks have an average age of ${facilities.getParkAvgAge()} years.`);
+facilities.getParkTreeDensity();
+facilities.getParkTreeGreaterThan(1000);
+console.log('----STREETS REPORT----');
