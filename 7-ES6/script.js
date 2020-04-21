@@ -37,7 +37,7 @@ facilities.addFacility(
     {
         name: 'Ocean Avenue',
         buildYear: 1999,
-        length: 10,
+        length: 3,
         size: 'big'
     }
 
@@ -48,7 +48,7 @@ facilities.addFacility(
     {
         name: 'Evergreen Street',
         buildYear: 2008,
-        length: 10,
+        length: 1,
         size: 'small'
     }
 
@@ -59,7 +59,7 @@ facilities.addFacility(
     {
         name: '4th Street',
         buildYear: 2015,
-        length: 10,
+        length: 2,
         size: 'normal'
     }
 
@@ -70,7 +70,7 @@ facilities.addFacility(
     {
         name: 'Sunset Boulevard',
         buildYear: 1982,
-        length: 10,
+        length: 4,
         size: 'huge'
     }
 
@@ -83,3 +83,5 @@ console.log(`Our ${facilities.parkList.length} parks have an average age of ${fa
 facilities.getParkTreeDensity();
 facilities.getParkTreeGreaterThan(1000);
 console.log('----STREETS REPORT----');
+console.log(`Our ${facilities.streetList.length} streets have a total lengh of ${facilities.getStreetTotalLength()} km, with an aveage of ${facilities.getStreetAvgLength()} km.`);
+facilities.getStreetSummary();

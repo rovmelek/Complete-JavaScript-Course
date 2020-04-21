@@ -91,6 +91,23 @@ class facilityContainer
         );   
     }
 
+    getStreetTotalLength()
+    {
+        return this.streetList.reduce((sum, street) => sum + street.length, 0);
+    }
+
+    getStreetAvgLength()
+    {
+        return this.getStreetTotalLength() / this.streetList.length;
+    }
+
+    getStreetSummary()
+    {
+        this.streetList.forEach(
+            street => console.log(`${street.name}, built in ${street.buildYear}, is a ${street.size} street.`)
+        )
+    }
+
     viewList()
     {
         console.log(this.parkList);
